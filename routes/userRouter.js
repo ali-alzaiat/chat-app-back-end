@@ -1,22 +1,10 @@
 const express = require("express");
 
 let userRouter = express.Router();
+let {getUser,addUser} = require("../controllers/userController");
 
-userRouter.get('/getUser',(req,res)=>{
-    try {
-        res.status(200).send('user');
-    } catch (error) {
-        res.status(500).send("Somthing went wrong.")
-    }
-    
-})
+userRouter.get('/getUser',getUser);
 
-userRouter.get('/addUser',(req,res)=>{
-    try {
-        res.status(201).send('user');
-    } catch (error) {
-        res.status(500).send("Somthing went wrong.")
-    }
-})
+userRouter.post('/addUser',addUser);
 
 module.exports.userRouter = userRouter;
