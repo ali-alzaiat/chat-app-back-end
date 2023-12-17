@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require("mongoose");
+const cors = require("cors");
 const {router} = require("./routes/router")
 require("dotenv").config();
 const { Server } = require("socket.io");
@@ -7,6 +8,7 @@ const { Server } = require("socket.io");
 let app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
+app.use(cors());
 let rooms = {};
 
 app.use('/',router)
