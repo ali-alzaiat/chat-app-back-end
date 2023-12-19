@@ -25,7 +25,7 @@ let login = (req,res)=>{
             res.status(500).send("username and password can't be empty");
             return;
         }
-        User.findOne({name:name}).then(data=>{
+        User.findOne({email:name}).then(data=>{
             if(!data){
                 res.status(401).send("User doesn't exist.");
                 return;
@@ -49,14 +49,21 @@ let addUser = (req,res)=>{
         if(!req.body.name || !req.body.password || !req.body.email){
             res.status(500).send("name, password and email can't be empty.")
         }
-        let newUser = User({
-            name:req.body.name,
-            password:req.body.password,
-            email:req.body.email
-        });
-        newUser.save().then((data)=>{
-            res.status(201).send('user added');
-        });
+        User.findOne({email:req.body.email}).then((data)=>{
+            if(data){
+                res.status(400).send("Email already exists");
+            }else{
+                let newUser = User({
+                    _id:req.body.email,
+                    name:req.body.name,
+                    password:req.body.password,
+                    email:req.body.email
+                });
+                newUser.save().then((data)=>{
+                    res.status(201).send('user added');
+                });
+            }
+        })
     } catch (error) {
         res.status(500).send("Something went wrong.")
     }
