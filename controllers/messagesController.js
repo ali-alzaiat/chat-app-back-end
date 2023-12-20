@@ -2,7 +2,9 @@ let Message = require("../models/messages");
 let mongoose = require("mongoose");
 
 let getMessage = (req,res)=>{
-    Message.find({sender:req.params.sender,receiver:req.params.receiver}).populate('receiver').populate('sender')
+    Message.find({$or:[{sender:req.params.sender,receiver:req.params.receiver},{receiver:req.params.sender,sender:req.params.receiver}]})
+    .populate('receiver')
+    .populate('sender')
     .then((messages)=>{
         messages.forEach((v)=>{
             v.receiver.password = "";
