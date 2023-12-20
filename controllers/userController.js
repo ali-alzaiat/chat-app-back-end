@@ -3,7 +3,7 @@ let jwtUtil = require("../helpers/jwtUtil")
 
 let getUser = (req,res)=>{
     try {
-        User.find({name:req.params.name}).then(data=>{
+        User.find({name:{$regex:req.params.name,$options:"i"}}).then(data=>{
             if(data.length === 0){
                 res.status(404).send("User not found.");
                 return;
