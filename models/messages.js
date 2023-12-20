@@ -12,8 +12,8 @@ const messageSchema = new mongoose.Schema({
         required: true
     },
     content: {
-        type: [String],
-        default: []
+        type: String,
+        required: true
     },
     timestamp: {
         type: Date,
@@ -21,9 +21,5 @@ const messageSchema = new mongoose.Schema({
     }
   });
 
-messageSchema.methods.addMessage = function(message) {
-    this.content.push(message);
-    return this.save();
-};
   
 module.exports = mongoose.model('Message', messageSchema);
