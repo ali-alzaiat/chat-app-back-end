@@ -3,13 +3,9 @@ let mongoose = require("mongoose");
 
 let getMessage = (req,res)=>{
     Message.find({$or:[{sender:req.params.sender,receiver:req.params.receiver},{receiver:req.params.sender,sender:req.params.receiver}]})
-    .populate('receiver')
-    .populate('sender')
+    .populate('receiver','-password')
+    .populate('sender','-password')
     .then((messages)=>{
-        messages.forEach((v)=>{
-            v.receiver.password = "";
-            v.sender.password = "";
-        })
         res.status(200).send({messages});
     }).catch((error)=>{
         console.log(error);
@@ -18,6 +14,59 @@ let getMessage = (req,res)=>{
 }
 
 module.exports.getMessage = getMessage;
+
+let getMyMessage = (req,res)=>{
+    Message.aggregate([
+        {
+          $sort: { timestamp: -1 }
+        },
+        {
+          $group: {
+            _id: {
+              $cond: [
+                { $gt: ["$sender", "$receiver"] },
+                { sender: "$sender", receiver: "$receiver" },
+                { sender: "$receiver", receiver: "$sender" }
+              ]
+            },
+            lastMessage: { $first: "$$ROOT" }
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "lastMessage.sender",
+            foreignField: "_id",
+            as: "senderInfo"
+          }
+        },
+        {
+          $lookup: {
+            from: "users",
+            localField: "lastMessage.receiver",
+            foreignField: "_id",
+            as: "receiverInfo"
+          }
+        },
+        {
+          $project: {
+            _id: "$lastMessage._id",
+            sender: { $arrayElemAt: ["$senderInfo.name", 0] },
+            receiver: { $arrayElemAt: ["$receiverInfo.name", 0] },
+            content: "$lastMessage.content",
+            timestamp: "$lastMessage.timestamp"
+          }
+        }
+      ])
+    .then((messages)=>{
+        res.status(200).send({messages});
+    }).catch((error)=>{
+        console.log(error);
+        res.status(500).send(error);
+    })
+}
+
+module.exports.getMyMessage = getMyMessage;
 
 let addMessage = (req,res)=>{
     let newMessage = new Message({

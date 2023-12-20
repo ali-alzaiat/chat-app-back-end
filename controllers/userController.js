@@ -72,7 +72,6 @@ let addUser = (req,res)=>{
 module.exports.addUser = addUser;
 
 let verifyToken = (req,res) => {
-    console.log(req.headers.authorization?.split(' ')[1]);
     res.send(jwtUtil.verifyToken(req.headers.authorization?.split(' ')[1]))
 }
 
