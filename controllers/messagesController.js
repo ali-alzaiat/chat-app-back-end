@@ -18,23 +18,17 @@ let getMessage = (req,res)=>{
 module.exports.getMessage = getMessage;
 
 let addMessage = (req,res)=>{
-    Message.findOne({sender:req.body.sender,receiver:req.body.receiver}).then((message)=>{
-        if(message){
-            message.addMessage(req.body.text).then((data)=>{
-                res.status(201).send("message added");
-            });
-        }else{
-            let newMessage = new Message({
-                receiver:req.body.receiver,
-                sender:req.body.sender,
-                content:req.body.text
-            })
-            newMessage.save().then((data)=>{res.status(201).send("message added");});
-        }
-    }).catch((error)=>{
+    let newMessage = new Message({
+        receiver:req.body.receiver,
+        sender:req.body.sender,
+        content:req.body.text
+    })
+    newMessage.save().then((data)=>{res.status(201).send("message saved");})
+    .catch((error)=>{
         console.log(error)
         res.status(500).send(error);
     })
+
 }
 
 module.exports.addMessage = addMessage;
