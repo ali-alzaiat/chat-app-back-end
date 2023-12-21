@@ -51,8 +51,10 @@ let getMyMessage = (req,res)=>{
         {
           $project: {
             _id: "$lastMessage._id",
-            sender: { $arrayElemAt: ["$senderInfo.name", 0] },
-            receiver: { $arrayElemAt: ["$receiverInfo.name", 0] },
+            sender: { $arrayElemAt: ["$senderInfo.email", 0] },
+            receiver: { $arrayElemAt: ["$receiverInfo.email", 0] },
+            senderName: { $arrayElemAt: ["$senderInfo.name", 0] },
+            receiverName: { $arrayElemAt: ["$receiverInfo.name", 0] },
             content: "$lastMessage.content",
             timestamp: "$lastMessage.timestamp"
           }
