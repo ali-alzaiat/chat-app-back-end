@@ -9,9 +9,7 @@ let app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
-app.use(cors({
-    origin: 'http://localhost:3000'
-  }));
+
 let rooms = {};
 
 app.use('/',router)
@@ -24,7 +22,7 @@ const server = app.listen(process.env.PORT,()=>{
 
 const io = new Server(server, {
     cors: {
-      origin: "http://localhost:3000",
+      origin: ["http://localhost:3000","https://chat-react-y89w.onrender.com"],
       methods: ["GET", "POST"]
     }
   });
