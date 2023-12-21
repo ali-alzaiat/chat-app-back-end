@@ -9,6 +9,9 @@ let app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:3000'
+  }));
 let rooms = {};
 
 app.use('/',router)
@@ -19,22 +22,27 @@ const server = app.listen(process.env.PORT,()=>{
     console.log("The server is running");
 })
 
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+      origin: "http://localhost:3000",
+      methods: ["GET", "POST"]
+    }
+  });
 
 io.on('connection',(socket)=>{
     console.log(socket.id+" connected");
 
     socket.on("user-connected",(room,name)=>{
         console.log(room);
-        rooms[room].users[socket.id] = name;
-        console.log(rooms[room].users[socket.id]);
-        console.log(name);
+        // rooms[room].users[socket.id] = name;
+        // console.log(rooms[room].users[socket.id]);
+        // console.log(name);
         socket.join(room);
         socket.to(room).emit("user-connected",name);
     })
 
-    socket.on("message",(room,message)=>{
-        socket.to(room).emit("message",message,rooms[room].users[socket.id]);
+    socket.on("message",(room,message,username)=>{
+        socket.to(room).emit("message",message,username);
     })
 
     // socket.on("room-added",(room)=>{
