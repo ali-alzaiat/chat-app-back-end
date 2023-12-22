@@ -34,7 +34,7 @@ let login = (req,res)=>{
                 res.status(401).send("Wrong password.");
                 return;
             }
-            let token = jwtUtil.generateToken(name,data.email);
+            let token = jwtUtil.generateToken(data.name,data.email);
             res.status(200).send(JSON.stringify(token));
         })
     } catch (error) {
