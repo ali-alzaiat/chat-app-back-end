@@ -18,6 +18,9 @@ module.exports.getMessage = getMessage;
 let getMyMessage = (req,res)=>{
     Message.aggregate([
         {
+          $match: { sender: req.params.sender}
+        },
+        {
           $sort: { timestamp: -1 }
         },
         {
