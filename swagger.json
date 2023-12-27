@@ -1,0 +1,177 @@
+{
+    "openapi": "3.0.3",
+    "info": {
+      "title": "Chat",
+      "description": "An API for a simple chat application.",
+      "version": "0.0.1"
+    },
+    "paths": {
+        "/user/getUser/{name}": {
+            "get": {
+              "description": "List of users with a certain name.",
+              "responses": {
+                "200": {
+                    "description": "Successfully fetched all users with the given name.",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "_id": {
+                                "type": "string"
+                              },
+                              "name": {
+                                "type": "string"
+                              },
+                              "password": {
+                                "type": "string"
+                              },
+                              "email": {
+                                "type": "string"
+                              }
+                            },
+                            "example": {
+                              "_id": "a@gmail.com",
+                              "name": "a",
+                              "password": "a2537",
+                              "email": "a@gmail.com"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+              },
+              "parameters": [
+                {
+                  "name": "name",
+                  "in": "path",
+                  "required": true,
+                  "type": "string",
+                  "format": "string"
+                }
+              ],
+              "security": [
+                {
+                  "bearerAuth": []
+                }
+              ]
+            }
+          },
+          "components": {
+            "securitySchemes": {
+              "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+              }
+              
+            }
+          },
+        "/user/login/{name}/{password}": {
+            "get": {
+              "description": "returns JWT token.",
+              "responses": {
+                "200": {
+                    "description": "Successfully logged in",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "token":{
+                            "type": "string"
+                          },
+                            "example": {
+                              "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTIzNDU2Nzg5LCJuYW1lIjoiSm9zZXBoIn0.OpOSSw7e485LOP5PrzScxHb7SR6sAOMRckfFwi4rp7o"
+                            }
+                          }
+                        }
+                      }
+                    }
+                  },
+                  "parameters": [
+                    {
+                      "name": "name",
+                      "in": "path",
+                      "required": true,
+                      "type": "string",
+                      "format": "string"
+                    },
+                    {
+                      "name": "password",
+                      "in": "path",
+                      "required": true,
+                      "type": "string",
+                      "format": "string"
+                    }
+                  ]
+              }
+            },
+        "/user/verifyToken": {
+            "get": {
+              "description": "Verify if the token with the user is valid",
+              "responses": {
+                "200": {
+                    "description": "The token is valid",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                              "type": "object",
+                              "properties": {
+                                "name": {
+                                  "type": "string"
+                                },
+                                "email": {
+                                  "type": "string"
+                                }
+                              }
+                            }
+                          }
+                    }
+                  }
+              }
+            }
+          },
+        "/user/signup": {
+            "post": {
+              "description": "Add new user.",
+              "responses": {
+                "201": {
+                    "description": "Successfully added a new user.",
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                              "type": "string",
+                              "example": "user added"
+                            }
+                        }
+                    }
+                }
+                },
+              "requestBody": {
+                "required": true,
+                "content": {
+                  "application/json": {
+                    "schema": {
+                      "type": "object",
+                      "properties": {
+                        "name": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        },
+                        "email": {
+                          "type": "string"
+                        }
+                      },
+                      "required": ["name", "password", "email"]
+                    }
+                  }
+                }
+            }
+          }
+        }
+    }
+}

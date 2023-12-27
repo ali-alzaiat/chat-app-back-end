@@ -4,8 +4,13 @@ const cors = require("cors");
 const {router} = require("./routes/router")
 require("dotenv").config();
 const { Server } = require("socket.io");
+const swaggerUi = require('swagger-ui-express');
+const swaggerDocument = require('./swagger.json');
 
 let app = express();
+
+app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
+
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cors());
