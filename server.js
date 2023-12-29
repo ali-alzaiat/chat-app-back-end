@@ -27,7 +27,7 @@ const server = app.listen(process.env.PORT,()=>{
 
 const io = new Server(server, {
     cors: {
-      origin: ["http://localhost:3000","https://chat-react-y89w.onrender.com"],
+      origin: ["http://localhost:3000","https://chat-react-y89w.onrender.com","https://chat-ecb31.web.app"],
       methods: ["GET", "POST"]
     }
   });
