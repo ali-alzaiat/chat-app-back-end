@@ -3,7 +3,7 @@
 This project is a real-time chat application developed using Node.js and React. The server is deployed on Render, and the client is hosted on Firebase. MongoDB is utilized for data storage, and Socket.io is used for real-time communication, ensuring instant messaging capabilities. The application adheres to responsive design principles, providing an optimal user experience across various devices and screen sizes.
 
 ## Deployment
-[demo](https://chat-ecb31.web.app/)
+[demo](https://chat-ecb31.web.app/) (It takes 5 minutes to load as I'm using a free service with limited hardware)
 
 ## Features
 * Real-time Messaging: Instant communication between users using Socket.io.
